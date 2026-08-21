@@ -9,7 +9,7 @@ export default function BuildingNow() {
       </p>
       <p className="mt-4 text-fg/70">
         Follow along on{" "}
-        <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="text-accent hover:underline">
+        <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="text-accent underline">
           GitHub
         </a>{" "}
         for when it surfaces.
