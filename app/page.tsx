@@ -1,3 +1,4 @@
+import Link from "next/link"
 import Hero from "@/components/Hero"
 import About from "@/components/About"
 import Experience from "@/components/Experience"
@@ -14,6 +15,12 @@ export default function Home() {
       <Projects />
       <BuildingNow />
       <Skills />
+      <section id="blog" className="px-6 py-24">
+        <h2 className="font-mono text-accent text-sm mb-4">blog</h2>
+        <Link href="/blog" className="font-display text-2xl hover:text-accent">
+          Read the blog →
+        </Link>
+      </section>
     </main>
   )
 }
