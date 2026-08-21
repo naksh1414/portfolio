@@ -18,19 +18,24 @@ export default function ContactForm() {
       honeypot: (form.elements.namedItem("company") as HTMLInputElement).value,
     }
 
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    const body = await res.json()
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      const body = await res.json()
 
-    if (body.ok) {
-      setStatus("sent")
-      form.reset()
-    } else {
+      if (body.ok) {
+        setStatus("sent")
+        form.reset()
+      } else {
+        setStatus("error")
+        setErrors(body.errors ?? {})
+      }
+    } catch {
       setStatus("error")
-      setErrors(body.errors ?? {})
+      setErrors({})
     }
   }
 
@@ -89,6 +94,11 @@ export default function ContactForm() {
         />
         {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
       </div>
+      {status === "error" && Object.keys(errors).length === 0 && (
+        <p className="text-red-400 text-sm">
+          Something went wrong sending that — email me directly instead.
+        </p>
+      )}
       <button
         type="submit"
         disabled={status === "sending"}
