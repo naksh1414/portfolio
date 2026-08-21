@@ -51,11 +51,16 @@ New direction: **departure-board / dispatch-console.**
 - **Metaphor carries through:** the Projects section renders as manifest rows (date ·
   name · status) rather than generic cards, so the dispatch-board concept isn't just a
   hero gimmick
-- **Motion budget:** CSS animations only for the flap-flip and tagline cycling. No
-  scroll-triggered reveal library — the hero flap animation is the one signature
-  interaction the site needs; adding a dependency for fades elsewhere was struck during
-  the final review (2026-08-21) as unrequested scope. Nothing on every card/hover by
-  default.
+- **Motion budget (revised 2026-08-21):** initially scoped as CSS-only with no motion
+  library; struck during final review as unrequested scope, then explicitly reinstated
+  by the user with a direct request for more animation and a bolder design pass. Current
+  scope: CSS keyframes for the flap-flip/tagline-cycle and hero load-in stagger; Framer
+  Motion for scroll-triggered section reveals and staggered list entrances (project
+  rows, skill categories); plain CSS/React for hover-tilt on project rows and an
+  infinite marquee ticker on the skills section. Research pass (Dribbble/Pinterest,
+  2026-08-21) confirmed motion-heavy hero treatments, tilted/rotated card elements, and
+  marquee tickers as recurring patterns in standout portfolios — this revision leans
+  into those rather than staying strictly minimal.
 
 ## Content structure (sections, in order)
 

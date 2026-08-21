@@ -6,7 +6,7 @@
 
 **Architecture:** Single Next.js 15 App Router project. Static/server-rendered pages for all content sections (hero through contact), one API route for the contact form. Content lives in typed data files (`data/*.ts`) and MDX (`content/blog/*.mdx`), not a CMS. Pure logic (flap-cell splitting, form validation, MDX file loading) is factored into small testable functions in `lib/`, kept separate from the React components that call them.
 
-**Tech Stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + Vitest (unit tests for `lib/`) + gray-matter + next-mdx-remote + Resend (contact email). No motion library — struck during final review (2026-08-21), see Global Constraints.
+**Tech Stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + Vitest (unit tests for `lib/`) + gray-matter + next-mdx-remote + Resend (contact email) + Framer Motion (reinstated 2026-08-21 per explicit user request for a more animated feel — see Tasks 10-11).
 
 **Spec:** `docs/superpowers/specs/2026-08-21-portfolio-design.md`
 
@@ -16,7 +16,7 @@
 - Fonts: single superfamily IBM Plex across three roles — `IBM Plex Mono` bold/poster-scale (hero/section headers, mimics split-flap cells), `IBM Plex Sans` (body), `IBM Plex Mono` small (nav/tags/labels), all via `next/font/google`
 - Signature interaction: hero name splits into per-character flap-cells that flip in on load, tagline cycles through role descriptors — CSS animation only, no JS animation library needed for this
 - Projects render as manifest rows (date · name · status), not generic cards — the dispatch-board metaphor carries through, not just a hero gimmick
-- Motion budget: CSS keyframes for the flap-flip/tagline-cycle only. No motion library, no scroll-reveal animation, no per-card/per-hover animation by default
+- Motion budget (revised 2026-08-21 per explicit user request): CSS keyframes still handle the flap-flip/tagline-cycle and hero load-in stagger (fixed-delay sequencing, no viewport detection needed). Framer Motion handles scroll-triggered `whileInView` reveals (viewport detection is a real JS concern CSS can't cleanly cover yet) and staggered list entrances (project rows, skill categories). Hover tilt on project rows and the skills marquee ticker are plain CSS/React, no library needed for those.
 - Content is hand-authored (resume + resume PDF as source of truth) — never invented stats, never a guessed GitHub deep-link URL (use the profile URL `https://github.com/naksh1414` as the fallback CTA everywhere a per-repo link isn't confirmed)
 - Deploy target is Vercel, but account creation / actual deploy is a manual step for the user at the end — not automated in this plan
 - No CMS, no auth, no test framework beyond Vitest for `lib/` pure functions — presentational components are verified visually, not unit-tested
@@ -1441,9 +1441,408 @@ git commit -m "fix: address lighthouse and responsive issues from final verifica
 
 ---
 
+## Task 10: Motion infrastructure + scroll reveals
+
+**Added 2026-08-21** after the user reviewed the shipped site and asked for a bolder,
+more animated pass. Reinstates Framer Motion (struck earlier in the final review as
+unrequested scope — now explicitly requested).
+
+**Files:**
+- Create: `components/RevealSection.tsx`
+- Modify: `components/About.tsx`, `components/Experience.tsx`, `components/BuildingNow.tsx`, `components/Skills.tsx`, `components/Projects.tsx`, `app/page.tsx`, `components/Nav.tsx`, `components/Hero.tsx`, `app/globals.css`
+
+**Interfaces:**
+- Consumes: nothing new from earlier tasks
+- Produces: `components/RevealSection.tsx` exports default `RevealSection({ children, className, delay }: { children: React.ReactNode; className?: string; delay?: number })` — a `motion.div` that fades/slides up once when scrolled into view. Later polish (Task 11) does not depend on this.
+
+- [ ] **Step 1: Install Framer Motion**
+
+```bash
+npm install framer-motion
+```
+
+- [ ] **Step 2: Build the reveal wrapper**
+
+Create `components/RevealSection.tsx`:
+
+```tsx
+"use client"
+
+import { motion } from "framer-motion"
+
+export default function RevealSection({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode
+  className?: string
+  delay?: number
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+```
+
+- [ ] **Step 3: Wrap section content (not the `<section>` tag itself — keep `id` on the outer `<section>` so nav anchors still work)**
+
+For `components/About.tsx`, `components/BuildingNow.tsx`: wrap the existing inner JSX (everything currently inside the `<section>`) in `<RevealSection>`, e.g.:
+
+```tsx
+import RevealSection from "@/components/RevealSection"
+
+export default function About() {
+  return (
+    <section id="about" className="px-6 py-24 max-w-3xl">
+      <RevealSection>
+        <h2 className="font-mono text-accent text-sm mb-4">about</h2>
+        {/* ...rest of existing content unchanged... */}
+      </RevealSection>
+    </section>
+  )
+}
+```
+
+Apply the same pattern to `BuildingNow.tsx` (wrap its heading+paragraphs).
+
+- [ ] **Step 4: Stagger the Experience list**
+
+In `components/Experience.tsx`, wrap each `<li>`'s content in `<RevealSection delay={index * 0.1}>` (the `.map()` callback needs an `index` param now):
+
+```tsx
+<ol className="space-y-10">
+  {EXPERIENCE.map((entry, index) => (
+    <li key={entry.role + entry.period} className="border-l border-white/10 pl-6">
+      <RevealSection delay={index * 0.1}>
+        <p className="font-mono text-sm text-fg/50">{entry.period}</p>
+        <h3 className="font-display text-2xl mt-1">
+          {entry.role} · {entry.org}
+        </h3>
+        <p className="mt-2 text-fg/70 leading-relaxed">{entry.detail}</p>
+      </RevealSection>
+    </li>
+  ))}
+</ol>
+```
+
+- [ ] **Step 5: Stagger the Projects manifest rows**
+
+In `components/Projects.tsx`, wrap each `<ProjectCard>` in `<RevealSection delay={index * 0.08}>` (the `.map()` callback needs an `index` param):
+
+```tsx
+<div>
+  {projects.map((project, index) => (
+    <RevealSection key={project.name} delay={index * 0.08}>
+      <ProjectCard project={project} />
+    </RevealSection>
+  ))}
+</div>
+```
+
+- [ ] **Step 6: Stagger the Skills categories**
+
+In `components/Skills.tsx`, wrap each category block in `<RevealSection delay={index * 0.08}>` (the `.map()` callback needs an `index` param):
+
+```tsx
+<div className="grid md:grid-cols-3 gap-8">
+  {skillCategories.map((category, index) => (
+    <RevealSection key={category.name} delay={index * 0.08}>
+      <h3 className="font-display text-lg mb-3">{category.name}</h3>
+      {/* item list — Task 11 replaces this with a marquee, leave as-is for now */}
+      <ul className="flex flex-wrap gap-2">
+        {category.items.map((item) => (
+          <li key={item} className="font-mono text-xs border border-white/10 px-2 py-1 text-fg/60">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </RevealSection>
+  ))}
+</div>
+```
+
+- [ ] **Step 7: Reveal the contact section**
+
+In `app/page.tsx`, wrap the contact section's heading+form in `<RevealSection>`:
+
+```tsx
+<section id="contact" className="px-6 py-24">
+  <RevealSection>
+    <h2 className="font-mono text-accent text-sm mb-8">contact</h2>
+    <ContactForm />
+  </RevealSection>
+</section>
+```
+
+- [ ] **Step 8: Nav fade-in on load**
+
+Add to `app/globals.css` (after the existing `flap-in`/`flap-cell` rules):
+
+```css
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+In `components/Nav.tsx`, add `animate-[fade-in_0.5s_ease-out]` to the `<header>`'s existing className.
+
+- [ ] **Step 9: Delay the hero's subtext and CTAs so they land after the name finishes flapping in**
+
+Add to `app/globals.css`:
+
+```css
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+In `components/Hero.tsx`, leave the badge/name/tagline untouched (they already animate via `flap-cell`). Add to the supporting-text `<p>` and the CTA `<div>`:
+
+```tsx
+<p
+  className="mt-4 max-w-xl text-fg/70 text-lg animate-[fade-up_0.5s_ease-out_both]"
+  style={{ animationDelay: "650ms" }}
+>
+  Software Engineer at MetaUpSpace, building AI-powered tools and infrastructure —
+  and currently building something new.
+</p>
+<div
+  className="mt-8 flex gap-4 animate-[fade-up_0.5s_ease-out_both]"
+  style={{ animationDelay: "800ms" }}
+>
+  {/* existing Resume/Get in touch links unchanged */}
+</div>
+```
+
+- [ ] **Step 10: Verify**
+
+`npm run build` must succeed. If Chrome browser automation tools are available, load the dev server, reload the page, and confirm: the nav fades in, the hero's subtext/CTAs land after the name finishes flapping, and scrolling down reveals each section (About, Experience entries one-by-one, Projects rows one-by-one, Building Now, Skills categories one-by-one, Contact) with a fade/slide-up rather than appearing instantly. If Chrome tools are NOT available, say so explicitly and rely on build success + code review — don't fabricate a visual check.
+
+- [ ] **Step 11: Commit**
+
+```bash
+git add -A
+git commit -m "feat: add scroll-triggered reveals and load-in stagger via Framer Motion"
+```
+
+---
+
+## Task 11: Interactive polish (hover tilt, marquee ticker, hero depth)
+
+**Files:**
+- Create: `lib/tilt.ts`
+- Test: `lib/tilt.test.ts`
+- Modify: `components/ProjectCard.tsx`, `components/Skills.tsx`, `components/Hero.tsx`, `app/globals.css`
+
+**Interfaces:**
+- Consumes: Task 10's `RevealSection` (already wraps `ProjectCard` and each Skills category — this task changes what's *inside* those wrappers, not the wrapping itself)
+- Produces: `lib/tilt.ts` exports `computeTilt(mouseX: number, mouseY: number, rect: { left: number; top: number; width: number; height: number }, maxDeg?: number): { rotateX: number; rotateY: number }`
+
+- [ ] **Step 1: Write the failing test for the tilt math**
+
+Create `lib/tilt.test.ts`:
+
+```ts
+import { describe, it, expect } from "vitest"
+import { computeTilt } from "./tilt"
+
+describe("computeTilt", () => {
+  const rect = { left: 0, top: 0, width: 200, height: 100 }
+
+  it("returns zero tilt when the cursor is at the exact center", () => {
+    expect(computeTilt(100, 50, rect)).toEqual({ rotateX: 0, rotateY: 0 })
+  })
+
+  it("tilts based on cursor offset from center, capped at maxDeg", () => {
+    const result = computeTilt(200, 100, rect, 6) // bottom-right corner
+    expect(result.rotateX).toBeLessThan(0)
+    expect(result.rotateY).toBeGreaterThan(0)
+    expect(Math.abs(result.rotateX)).toBeLessThanOrEqual(6)
+    expect(Math.abs(result.rotateY)).toBeLessThanOrEqual(6)
+  })
+
+  it("returns zero tilt when maxDeg is 0", () => {
+    expect(computeTilt(200, 100, rect, 0)).toEqual({ rotateX: 0, rotateY: 0 })
+  })
+})
+```
+
+- [ ] **Step 2: Run the test to verify it fails**
+
+Run: `npm run test`
+Expected: FAIL — `lib/tilt.ts` does not exist yet.
+
+- [ ] **Step 3: Implement the tilt math**
+
+Create `lib/tilt.ts`:
+
+```ts
+interface Rect {
+  left: number
+  top: number
+  width: number
+  height: number
+}
+
+export function computeTilt(
+  mouseX: number,
+  mouseY: number,
+  rect: Rect,
+  maxDeg: number = 6
+): { rotateX: number; rotateY: number } {
+  const px = (mouseX - rect.left) / rect.width - 0.5
+  const py = (mouseY - rect.top) / rect.height - 0.5
+  return {
+    rotateX: -py * 2 * maxDeg,
+    rotateY: px * 2 * maxDeg,
+  }
+}
+```
+
+- [ ] **Step 4: Run the test to verify it passes**
+
+Run: `npm run test`
+Expected: PASS (3 tests)
+
+- [ ] **Step 5: Add subtle hover tilt to project manifest rows**
+
+Modify `components/ProjectCard.tsx` — add `"use client"` at the top (required for the mouse handlers/state), and wire in the tilt:
+
+```tsx
+"use client"
+
+import { useRef, useState } from "react"
+import type { Project } from "@/data/projects"
+import { computeTilt } from "@/lib/tilt"
+
+export default function ProjectCard({ project }: { project: Project }) {
+  const ref = useRef<HTMLDetailsElement>(null)
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 })
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDetailsElement>) {
+    const rect = ref.current?.getBoundingClientRect()
+    if (!rect) return
+    setTilt(computeTilt(e.clientX, e.clientY, rect, 3))
+  }
+
+  function handleMouseLeave() {
+    setTilt({ rotateX: 0, rotateY: 0 })
+  }
+
+  return (
+    <details
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="group border-b border-white/10 py-4 transition-transform duration-150 ease-out"
+      style={{ transform: `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)` }}
+    >
+      {/* existing <summary> and content unchanged */}
+    </details>
+  )
+}
+```
+
+Keep the existing `<summary>`/`<div>` content exactly as it is today — only the outer `<details>` element's opening tag and the `"use client"`/imports/state change.
+
+- [ ] **Step 6: Convert the skills item lists into an infinite marquee ticker per category**
+
+Add to `app/globals.css`:
+
+```css
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+```
+
+Modify `components/Skills.tsx`'s item-list rendering (inside the `RevealSection` from Task 10, replacing the plain `<ul>`):
+
+```tsx
+<div className="overflow-hidden">
+  <div className="flex gap-2 w-max animate-[marquee_20s_linear_infinite] hover:[animation-play-state:paused]">
+    {[...category.items, ...category.items].map((item, i) => (
+      <span
+        key={`${item}-${i}`}
+        className="font-mono text-xs border border-white/10 px-2 py-1 text-fg/60 shrink-0"
+      >
+        {item}
+      </span>
+    ))}
+  </div>
+</div>
+```
+
+The list is duplicated exactly once (`[...items, ...items]`) so `translateX(-50%)` loops seamlessly — the second copy lines up exactly where the first started.
+
+- [ ] **Step 7: Give the hero background more depth (grain + layered static glow)**
+
+Add to `app/globals.css`:
+
+```css
+.grain-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+```
+
+In `components/Hero.tsx`, add `grain-overlay` to the `<section id="hero">`'s className (it already has `relative overflow-hidden`, which this depends on), and add a layered glow directly after the opening `<section>` tag, before the existing badge `<p>`:
+
+```tsx
+<div className="pointer-events-none absolute inset-0 overflow-hidden">
+  <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-accent/10 blur-3xl" />
+  <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-board blur-3xl opacity-40" />
+</div>
+```
+
+- [ ] **Step 8: Verify**
+
+`npm run test` must show all tests passing (including the 3 new tilt tests). `npm run build` must succeed. If Chrome browser automation tools are available, hover over a few project rows to confirm the tilt follows the cursor subtly and resets on mouse-leave, confirm the skills tickers scroll continuously and pause on hover, and confirm the hero background reads as textured/layered rather than flat. If Chrome tools are NOT available, say so explicitly — don't fabricate a visual check.
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add -A
+git commit -m "feat: add project hover-tilt, skills marquee ticker, and hero depth"
+```
+
+---
+
 ## Manual follow-up for the user (not part of this plan's automation)
 
 - Create a Resend account, verify a sending domain, and put the real `RESEND_API_KEY` in `.env.local`
 - Create a Vercel account/project and deploy (`vercel` CLI or Vercel dashboard import from git)
 - Point a custom domain at the Vercel deployment if desired
 - Write and drop real posts into `content/blog/*.mdx` whenever ready — the blog already handles going from empty to populated with no code changes
+- Before or when writing the first real blog post: install `@tailwindcss/typography` (`npm i -D @tailwindcss/typography`, add `@plugin "@tailwindcss/typography";` to `app/globals.css`) — the `prose`/`prose-invert` classes on the post page are currently inert without it (confirmed by the user, deferred on purpose, not forgotten)
