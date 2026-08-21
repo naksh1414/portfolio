@@ -1,6 +1,4 @@
-const GITHUB_URL = "https://github.com/naksh1414"
-const LINKEDIN_URL = "https://www.linkedin.com/in/nakshatra-manglik/"
-const EMAIL = "nakshatramanglik14@gmail.com"
+import { GITHUB_URL, LINKEDIN_URL, CONTACT_EMAIL } from "@/lib/site"
 
 export default function Footer() {
   return (
@@ -13,7 +11,7 @@ export default function Footer() {
           <a href={LINKEDIN_URL} target="_blank" rel="noreferrer" className="hover:text-accent">
             LinkedIn
           </a>
-          <a href={`mailto:${EMAIL}`} className="hover:text-accent">
+          <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-accent">
             Email
           </a>
           <a href="/resume.pdf" target="_blank" rel="noreferrer" className="hover:text-accent">

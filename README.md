@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
 
-## Getting Started
+Nakshatra Manglik's personal portfolio — a Next.js site with a departure-board
+(split-flap) visual theme.
 
-First, run the development server:
+## Tech stack
+
+- [Next.js](https://nextjs.org) (App Router)
+- TypeScript
+- Tailwind CSS v4
+- Vitest for unit tests
+
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.local.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fill in `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `RESEND_API_KEY` — get one from [resend.com](https://resend.com); the contact
+  form uses it to send email. Verify a sending domain there for production use.
+- `CONTACT_TO_EMAIL` — the address contact form submissions are sent to.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+- `npm run dev` — start the dev server
+- `npm run build` — production build
+- `npm run start` — run the production build
+- `npm run test` — run the Vitest suite
 
-To learn more about Next.js, take a look at the following resources:
+## Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `data/projects.ts`, `data/skills.ts`, `components/Experience.tsx` — resume-derived
+  content (projects, skills, work experience).
+- `content/blog/*.mdx` — blog posts. Currently empty; drop in `.mdx` files with
+  `title`, `date`, and `excerpt` frontmatter to publish a post.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built for [Vercel](https://vercel.com). In production, the contact form needs
+a verified Resend sending domain — the default `onboarding@resend.dev` sender
+only delivers to the Resend account owner, not to third parties.

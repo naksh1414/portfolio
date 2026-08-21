@@ -1,4 +1,4 @@
-const GITHUB_URL = "https://github.com/naksh1414"
+import { GITHUB_URL } from "@/lib/site"
 
 export default function BuildingNow() {
   return (

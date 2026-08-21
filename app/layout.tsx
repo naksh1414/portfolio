@@ -6,12 +6,12 @@ import "./globals.css"
 
 const mono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["600", "700"],
+  variable: "--font-plex-mono",
+  weight: ["400", "600", "700"],
 })
 const sans = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-plex-sans",
   weight: ["400", "500", "600"],
 })
 
