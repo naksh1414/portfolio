@@ -1,8 +1,31 @@
+"use client"
+
+import { useRef, useState } from "react"
 import type { Project } from "@/data/projects"
+import { computeTilt } from "@/lib/tilt"
 
 export default function ProjectCard({ project }: { project: Project }) {
+  const ref = useRef<HTMLDetailsElement>(null)
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 })
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDetailsElement>) {
+    const rect = ref.current?.getBoundingClientRect()
+    if (!rect) return
+    setTilt(computeTilt(e.clientX, e.clientY, rect, 3))
+  }
+
+  function handleMouseLeave() {
+    setTilt({ rotateX: 0, rotateY: 0 })
+  }
+
   return (
-    <details className="group border-b border-white/10 py-4">
+    <details
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="group border-b border-white/10 py-4 transition-transform duration-150 ease-out"
+      style={{ transform: `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)` }}
+    >
       <summary className="flex flex-wrap items-baseline gap-4 cursor-pointer list-none font-mono text-sm">
         <span className="text-fg/50 w-20">{project.date}</span>
         <span className="font-display text-lg flex-1">{project.name}</span>

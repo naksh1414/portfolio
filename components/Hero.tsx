@@ -16,7 +16,11 @@ export default function Hero() {
   }, [])
 
   return (
-    <section id="hero" className="relative min-h-[90vh] flex flex-col justify-center px-6 overflow-hidden">
+    <section id="hero" className="relative min-h-[90vh] flex flex-col justify-center px-6 overflow-hidden grain-overlay">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-accent/10 blur-3xl" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-board blur-3xl opacity-40" />
+      </div>
       <p className="font-mono text-accent text-sm mb-4">[ NOW BOARDING ]</p>
       <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight" aria-label={NAME}>
         <span aria-hidden="true" className="flex flex-wrap">
