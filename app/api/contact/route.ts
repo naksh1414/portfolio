@@ -3,7 +3,18 @@ import { Resend } from "resend"
 import { validateContactForm, type ContactFormData } from "@/lib/validateContactForm"
 
 export async function POST(request: Request) {
-  const data = (await request.json()) as ContactFormData
+  const body = await request.json().catch(() => null)
+  if (
+    !body ||
+    typeof body.name !== "string" ||
+    typeof body.email !== "string" ||
+    typeof body.message !== "string" ||
+    typeof body.honeypot !== "string"
+  ) {
+    return NextResponse.json({ ok: false, errors: {} }, { status: 400 })
+  }
+  const data = body as ContactFormData
+
   const result = validateContactForm(data)
 
   if (!result.ok) {

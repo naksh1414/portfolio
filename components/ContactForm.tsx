@@ -49,7 +49,11 @@ export default function ContactForm() {
         aria-hidden="true"
       />
       <div>
+        <label htmlFor="name" className="block font-mono text-xs text-fg/50 mb-1">
+          Name
+        </label>
         <input
+          id="name"
           name="name"
           placeholder="Name"
           required
@@ -58,7 +62,11 @@ export default function ContactForm() {
         {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
       </div>
       <div>
+        <label htmlFor="email" className="block font-mono text-xs text-fg/50 mb-1">
+          Email
+        </label>
         <input
+          id="email"
           name="email"
           type="email"
           placeholder="Email"
@@ -68,7 +76,11 @@ export default function ContactForm() {
         {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
       </div>
       <div>
+        <label htmlFor="message" className="block font-mono text-xs text-fg/50 mb-1">
+          Message
+        </label>
         <textarea
+          id="message"
           name="message"
           placeholder="Message"
           required
