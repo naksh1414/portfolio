@@ -51,9 +51,11 @@ New direction: **departure-board / dispatch-console.**
 - **Metaphor carries through:** the Projects section renders as manifest rows (date ·
   name · status) rather than generic cards, so the dispatch-board concept isn't just a
   hero gimmick
-- **Motion budget:** CSS animations only for the flap-flip and tagline cycling (no
-  Framer Motion needed for this) + simple scroll-triggered fade/slide-up elsewhere via
-  Framer Motion. Nothing on every card/hover by default.
+- **Motion budget:** CSS animations only for the flap-flip and tagline cycling. No
+  scroll-triggered reveal library — the hero flap animation is the one signature
+  interaction the site needs; adding a dependency for fades elsewhere was struck during
+  the final review (2026-08-21) as unrequested scope. Nothing on every card/hover by
+  default.
 
 ## Content structure (sections, in order)
 
@@ -81,7 +83,8 @@ New direction: **departure-board / dispatch-console.**
 ## Tech stack
 
 - Next.js 15 (App Router), TypeScript, Tailwind CSS
-- Framer Motion — hero interaction + scroll reveals only (see motion budget above)
+- CSS-only animation for the hero split-flap interaction — no motion library (see motion
+  budget above)
 - MDX for blog posts (`content/blog/*.mdx`), empty at launch
 - Contact form: Next.js API route → Resend for email delivery, honeypot field for spam
 - Resume PDF served as static asset (`/public/resume.pdf`), linked from hero + footer

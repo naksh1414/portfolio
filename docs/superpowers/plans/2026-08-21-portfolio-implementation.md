@@ -6,7 +6,7 @@
 
 **Architecture:** Single Next.js 15 App Router project. Static/server-rendered pages for all content sections (hero through contact), one API route for the contact form. Content lives in typed data files (`data/*.ts`) and MDX (`content/blog/*.mdx`), not a CMS. Pure logic (flap-cell splitting, form validation, MDX file loading) is factored into small testable functions in `lib/`, kept separate from the React components that call them.
 
-**Tech Stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + Framer Motion (scroll-reveals only) + Vitest (unit tests for `lib/`) + gray-matter + next-mdx-remote + Resend (contact email).
+**Tech Stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS + Vitest (unit tests for `lib/`) + gray-matter + next-mdx-remote + Resend (contact email). No motion library — struck during final review (2026-08-21), see Global Constraints.
 
 **Spec:** `docs/superpowers/specs/2026-08-21-portfolio-design.md`
 
@@ -16,7 +16,7 @@
 - Fonts: single superfamily IBM Plex across three roles — `IBM Plex Mono` bold/poster-scale (hero/section headers, mimics split-flap cells), `IBM Plex Sans` (body), `IBM Plex Mono` small (nav/tags/labels), all via `next/font/google`
 - Signature interaction: hero name splits into per-character flap-cells that flip in on load, tagline cycles through role descriptors — CSS animation only, no JS animation library needed for this
 - Projects render as manifest rows (date · name · status), not generic cards — the dispatch-board metaphor carries through, not just a hero gimmick
-- Motion budget: CSS keyframes for the flap-flip/tagline-cycle + Framer Motion only for section scroll-reveals — no per-card/per-hover animation by default
+- Motion budget: CSS keyframes for the flap-flip/tagline-cycle only. No motion library, no scroll-reveal animation, no per-card/per-hover animation by default
 - Content is hand-authored (resume + resume PDF as source of truth) — never invented stats, never a guessed GitHub deep-link URL (use the profile URL `https://github.com/naksh1414` as the fallback CTA everywhere a per-repo link isn't confirmed)
 - Deploy target is Vercel, but account creation / actual deploy is a manual step for the user at the end — not automated in this plan
 - No CMS, no auth, no test framework beyond Vitest for `lib/` pure functions — presentational components are verified visually, not unit-tested
