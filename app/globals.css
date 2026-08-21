@@ -6,15 +6,14 @@
   --color-paper: #ECE7DC;
   --color-fg: #f4f4f0;
   --color-accent: #FFA23A;
-  --font-display: var(--font-mono);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-plex-mono);
 }
 
 html {
   scroll-behavior: smooth;
-}
-
-body {
-  background-color: #0e1116;
+  scroll-padding-top: 5rem;
 }
 
 @keyframes flap-in {
@@ -35,4 +34,11 @@ body {
 .flap-cell {
   display: inline-block;
   animation: flap-in 0.4s ease-out both;
+  background-color: var(--color-board);
+  border-bottom: 1px solid rgb(0 0 0 / 0.5);
+  padding: 0.05em 0.12em;
+}
+
+.flap-cell-name {
+  color: var(--color-paper);
 }

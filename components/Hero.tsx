@@ -21,8 +21,12 @@ export default function Hero() {
       <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight" aria-label={NAME}>
         <span aria-hidden="true" className="flex flex-wrap">
           {NAME.split("").map((char, i) => (
-            <span key={i} className="flap-cell" style={{ animationDelay: `${i * 35}ms` }}>
-              {char === " " ? " " : char}
+            <span
+              key={i}
+              className="flap-cell flap-cell-name"
+              style={{ animationDelay: `${i * 35}ms` }}
+            >
+              {char === " " ? " " : char}
             </span>
           ))}
         </span>
