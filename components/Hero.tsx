@@ -34,11 +34,17 @@ export default function Hero() {
       <p key={taglineIndex} className="mt-6 font-mono text-accent text-lg flap-cell">
         {TAGLINES[taglineIndex]}
       </p>
-      <p className="mt-4 max-w-xl text-fg/70 text-lg">
+      <p
+        className="mt-4 max-w-xl text-fg/70 text-lg animate-[fade-up_0.5s_ease-out_both]"
+        style={{ animationDelay: "650ms" }}
+      >
         Software Engineer at MetaUpSpace, building AI-powered tools and infrastructure —
         and currently building something new.
       </p>
-      <div className="mt-8 flex gap-4">
+      <div
+        className="mt-8 flex gap-4 animate-[fade-up_0.5s_ease-out_both]"
+        style={{ animationDelay: "800ms" }}
+      >
         <a
           href="/resume.pdf"
           target="_blank"

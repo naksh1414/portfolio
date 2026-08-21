@@ -6,6 +6,7 @@ import Projects from "@/components/Projects"
 import BuildingNow from "@/components/BuildingNow"
 import Skills from "@/components/Skills"
 import ContactForm from "@/components/ContactForm"
+import RevealSection from "@/components/RevealSection"
 
 export default function Home() {
   return (
@@ -23,8 +24,10 @@ export default function Home() {
         </Link>
       </section>
       <section id="contact" className="px-6 py-24">
-        <h2 className="font-mono text-accent text-sm mb-8">contact</h2>
-        <ContactForm />
+        <RevealSection>
+          <h2 className="font-mono text-accent text-sm mb-8">contact</h2>
+          <ContactForm />
+        </RevealSection>
       </section>
     </main>
   )

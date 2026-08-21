@@ -1,5 +1,6 @@
 import { projects } from "@/data/projects"
 import ProjectCard from "@/components/ProjectCard"
+import RevealSection from "@/components/RevealSection"
 import { GITHUB_URL } from "@/lib/site"
 
 export default function Projects() {
@@ -12,8 +13,10 @@ export default function Projects() {
         </a>
       </div>
       <div>
-        {projects.map((project) => (
-          <ProjectCard key={project.name} project={project} />
+        {projects.map((project, index) => (
+          <RevealSection key={project.name} delay={index * 0.08}>
+            <ProjectCard project={project} />
+          </RevealSection>
         ))}
       </div>
     </section>

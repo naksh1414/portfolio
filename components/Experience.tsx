@@ -1,3 +1,5 @@
+import RevealSection from "@/components/RevealSection"
+
 interface ExperienceEntry {
   role: string
   org: string
@@ -27,13 +29,15 @@ export default function Experience() {
     <section id="experience" className="px-6 py-24 max-w-3xl">
       <h2 className="font-mono text-accent text-sm mb-8">experience</h2>
       <ol className="space-y-10">
-        {EXPERIENCE.map((entry) => (
+        {EXPERIENCE.map((entry, index) => (
           <li key={entry.role + entry.period} className="border-l border-white/10 pl-6">
-            <p className="font-mono text-sm text-fg/50">{entry.period}</p>
-            <h3 className="font-display text-2xl mt-1">
-              {entry.role} · {entry.org}
-            </h3>
-            <p className="mt-2 text-fg/70 leading-relaxed">{entry.detail}</p>
+            <RevealSection delay={index * 0.1}>
+              <p className="font-mono text-sm text-fg/50">{entry.period}</p>
+              <h3 className="font-display text-2xl mt-1">
+                {entry.role} · {entry.org}
+              </h3>
+              <p className="mt-2 text-fg/70 leading-relaxed">{entry.detail}</p>
+            </RevealSection>
           </li>
         ))}
       </ol>
