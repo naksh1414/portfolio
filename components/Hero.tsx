@@ -18,12 +18,14 @@ export default function Hero() {
   return (
     <section id="hero" className="relative min-h-[90vh] flex flex-col justify-center px-6 overflow-hidden">
       <p className="font-mono text-accent text-sm mb-4">[ NOW BOARDING ]</p>
-      <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight flex flex-wrap">
-        {NAME.split("").map((char, i) => (
-          <span key={i} className="flap-cell" style={{ animationDelay: `${i * 35}ms` }}>
-            {char === " " ? " " : char}
-          </span>
-        ))}
+      <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight" aria-label={NAME}>
+        <span aria-hidden="true" className="flex flex-wrap">
+          {NAME.split("").map((char, i) => (
+            <span key={i} className="flap-cell" style={{ animationDelay: `${i * 35}ms` }}>
+              {char === " " ? " " : char}
+            </span>
+          ))}
+        </span>
       </h1>
       <p key={taglineIndex} className="mt-6 font-mono text-accent text-lg flap-cell">
         {TAGLINES[taglineIndex]}
