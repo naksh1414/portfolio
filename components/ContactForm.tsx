@@ -39,12 +39,19 @@ export default function ContactForm() {
     }
   }
 
+  const field =
+    "w-full bg-white/70 border border-white rounded-xl px-4 py-3 text-sm placeholder:text-fg/40 focus:border-accent/50 focus:ring-2 focus:ring-accent/15 outline-none transition"
+
   if (status === "sent") {
-    return <p className="text-accent font-mono">Message sent — thanks, I&apos;ll reply soon.</p>
+    return (
+      <p className="h-full flex items-center justify-center px-6 py-12 text-center text-accent font-medium">
+        Message sent — thanks, I&apos;ll reply soon.
+      </p>
+    )
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3">
       <input
         type="text"
         name="company"
@@ -53,58 +60,34 @@ export default function ContactForm() {
         className="hidden"
         aria-hidden="true"
       />
-      <div>
-        <label htmlFor="name" className="block font-mono text-xs text-fg/50 mb-1">
-          Name
-        </label>
-        <input
-          id="name"
-          name="name"
-          placeholder="Name"
-          required
-          className="w-full bg-transparent border border-white/20 px-4 py-3 focus:border-accent outline-none"
-        />
-        {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
+      <div className="grid sm:grid-cols-2 gap-3">
+        <div>
+          <label htmlFor="name" className="sr-only">Your Name</label>
+          <input id="name" name="name" placeholder="Your Name" required className={field} />
+          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+        </div>
+        <div>
+          <label htmlFor="email" className="sr-only">Your Email</label>
+          <input id="email" name="email" type="email" placeholder="Your Email" required className={field} />
+          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+        </div>
       </div>
       <div>
-        <label htmlFor="email" className="block font-mono text-xs text-fg/50 mb-1">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="Email"
-          required
-          className="w-full bg-transparent border border-white/20 px-4 py-3 focus:border-accent outline-none"
-        />
-        {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
-      </div>
-      <div>
-        <label htmlFor="message" className="block font-mono text-xs text-fg/50 mb-1">
-          Message
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          placeholder="Message"
-          required
-          rows={5}
-          className="w-full bg-transparent border border-white/20 px-4 py-3 focus:border-accent outline-none"
-        />
-        {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
+        <label htmlFor="message" className="sr-only">Your Message</label>
+        <textarea id="message" name="message" placeholder="Your Message" required rows={6} className={`${field} resize-none`} />
+        {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
       </div>
       {status === "error" && Object.keys(errors).length === 0 && (
-        <p className="text-red-400 text-sm">
+        <p className="text-red-500 text-sm">
           Something went wrong sending that — email me directly instead.
         </p>
       )}
       <button
         type="submit"
         disabled={status === "sending"}
-        className="font-mono text-sm border border-accent text-accent px-5 py-3 hover:bg-accent hover:text-base transition-colors disabled:opacity-50"
+        className="w-full sm:w-auto sm:px-16 rounded-xl bg-fg text-white py-3 text-sm font-medium hover:opacity-85 transition-opacity disabled:opacity-50"
       >
-        {status === "sending" ? "Sending…" : "Send"}
+        {status === "sending" ? "Sending…" : "Send Message ➤"}
       </button>
     </form>
   )

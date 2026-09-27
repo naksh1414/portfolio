@@ -1,22 +1,28 @@
 import { GITHUB_URL } from "@/lib/site"
-import RevealSection from "@/components/RevealSection"
 
 export default function BuildingNow() {
   return (
-    <section id="building" className="px-6 py-24 max-w-2xl">
-      <RevealSection>
-        <h2 className="font-mono text-accent text-sm mb-4">building now</h2>
-        <p className="font-display text-3xl md:text-4xl leading-tight">
-          Building something new. Can&apos;t share details yet.
-        </p>
-        <p className="mt-4 text-fg/70">
-          Follow along on{" "}
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="text-accent underline">
-            GitHub
-          </a>{" "}
-          for when it surfaces.
-        </p>
-      </RevealSection>
+    <section id="building" className="glass rounded-[28px] px-6 py-6 md:px-12 flex flex-wrap items-center justify-between gap-4">
+      <div className="flex items-center gap-4">
+        <span className="relative flex w-3 h-3">
+          <span className="absolute inset-0 rounded-full bg-accent/60 animate-ping" />
+          <span className="relative w-3 h-3 rounded-full bg-accent" />
+        </span>
+        <div>
+          <p className="eyebrow">Building now</p>
+          <p className="mt-1 font-semibold">
+            Something new. <span className="text-fg/45 font-normal">Can&apos;t share details yet.</span>
+          </p>
+        </div>
+      </div>
+      <a
+        href={GITHUB_URL}
+        target="_blank"
+        rel="noreferrer"
+        className="card rounded-full px-4 py-2 text-xs font-medium hover:bg-white transition"
+      >
+        Follow on GitHub ↗
+      </a>
     </section>
   )
 }

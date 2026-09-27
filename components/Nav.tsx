@@ -1,32 +1,66 @@
 import Link from "next/link"
 
 const LINKS = [
-  { href: "/#about", label: "about" },
-  { href: "/#experience", label: "experience" },
-  { href: "/#projects", label: "projects" },
-  { href: "/#building", label: "building" },
-  { href: "/#skills", label: "skills" },
-  { href: "/#blog", label: "blog" },
-  { href: "/#contact", label: "contact" },
+  { href: "/#top", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/#services", label: "Services" },
+  { href: "/#projects", label: "Work" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/#book", label: "Book a Call" },
+  { href: "/#contact", label: "Contact" },
 ]
 
 export default function Nav() {
   return (
-    <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 bg-base/80 backdrop-blur-sm border-b border-white/10 animate-[fade-in_0.5s_ease-out]">
-      <Link href="/" className="font-display text-lg tracking-tight shrink-0">
-        Nakshatra
-      </Link>
-      <nav className="flex gap-5 md:gap-6 overflow-x-auto font-mono text-sm text-fg/70">
-        {LINKS.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            className="hover:text-accent transition-colors shrink-0"
+    <header className="fixed top-4 inset-x-0 z-50 px-4">
+      <div className="glass !bg-white/90 mx-auto max-w-6xl rounded-2xl flex items-center justify-between gap-4 pl-3 pr-2 py-2">
+        <Link href="/" className="flex items-center gap-3 shrink-0">
+          <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-white text-fg border font-semibold text-sm">
+            N
+          </span>
+          <span className="leading-tight">
+            <span className="block text-sm font-semibold">Nakshatra Manglik</span>
+            <span className="block text-[0.6875rem] text-fg/50">Software Engineer</span>
+          </span>
+        </Link>
+
+        <nav className="hidden xl:flex items-center gap-1 text-[0.8125rem] text-fg/60">
+          {LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="rounded-full px-3.5 py-1.5 hover:bg-white hover:text-fg hover:shadow-sm transition"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <Link
+            href="/#contact"
+            className="card hidden sm:inline-block whitespace-nowrap rounded-full px-4 py-2 text-[0.8125rem] font-medium hover:bg-white transition"
           >
-            {link.label}
-          </a>
-        ))}
-      </nav>
+            Let&apos;s Talk ↗
+          </Link>
+          {/* ponytail: native <details> menu, no JS state needed */}
+          <details className="xl:hidden relative">
+            <summary className="list-none cursor-pointer card rounded-full w-9 h-9 flex items-center justify-center" aria-label="Menu">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+            </summary>
+            <nav className="card !bg-white absolute right-0 mt-2 w-48 rounded-2xl p-2 flex flex-col text-sm">
+              {LINKS.map((link) => (
+                <Link key={link.href} href={link.href} className="rounded-xl px-3 py-2 hover:bg-white transition">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </details>
+        </div>
+      </div>
     </header>
   )
 }

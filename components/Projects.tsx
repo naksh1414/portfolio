@@ -1,22 +1,27 @@
 import { projects } from "@/data/projects"
 import ProjectCard from "@/components/ProjectCard"
-import RevealSection from "@/components/RevealSection"
 import { GITHUB_URL } from "@/lib/site"
 
 export default function Projects() {
   return (
-    <section id="projects" className="px-6 py-24">
-      <div className="flex justify-between items-baseline mb-8">
-        <h2 className="font-mono text-accent text-sm">[ MANIFEST ]</h2>
-        <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="font-mono text-sm text-fg/60 hover:text-accent">
-          View all on GitHub →
+    <section id="projects" className="glass rounded-[28px] px-6 py-10 md:px-12">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="eyebrow">Featured projects</p>
+          <h2 className="mt-2 text-2xl md:text-3xl font-semibold tracking-tight">Selected Work</h2>
+        </div>
+        <a
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="card shrink-0 rounded-full px-4 py-2 text-xs font-medium hover:bg-white transition"
+        >
+          View All Projects ↗
         </a>
       </div>
-      <div>
-        {projects.map((project, index) => (
-          <RevealSection key={project.name} delay={index * 0.08}>
-            <ProjectCard project={project} />
-          </RevealSection>
+      <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
+        {projects.map((project, i) => (
+          <ProjectCard key={project.name} project={project} index={i} />
         ))}
       </div>
     </section>

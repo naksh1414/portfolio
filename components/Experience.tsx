@@ -1,5 +1,3 @@
-import RevealSection from "@/components/RevealSection"
-
 interface ExperienceEntry {
   role: string
   org: string
@@ -26,18 +24,22 @@ const EXPERIENCE: ExperienceEntry[] = [
 
 export default function Experience() {
   return (
-    <section id="experience" className="px-6 py-24 max-w-3xl">
-      <h2 className="font-mono text-accent text-sm mb-8">experience</h2>
-      <ol className="space-y-10">
-        {EXPERIENCE.map((entry, index) => (
-          <li key={entry.role + entry.period} className="border-l border-white/10 pl-6">
-            <RevealSection delay={index * 0.1}>
-              <p className="font-mono text-sm text-fg/50">{entry.period}</p>
-              <h3 className="font-display text-2xl mt-1">
-                {entry.role} · {entry.org}
-              </h3>
-              <p className="mt-2 text-fg/70 leading-relaxed">{entry.detail}</p>
-            </RevealSection>
+    <section id="experience" className="glass rounded-[28px] px-6 py-10 md:px-12">
+      <p className="eyebrow">Career</p>
+      <h2 className="mt-2 text-2xl md:text-3xl font-semibold tracking-tight">Where I&apos;ve Worked</h2>
+      <ol className="mt-8 grid md:grid-cols-2 gap-4">
+        {EXPERIENCE.map((entry) => (
+          <li key={entry.role + entry.period} className="card rounded-2xl p-6">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h3 className="font-semibold">{entry.role}</h3>
+                <p className="text-sm text-accent mt-0.5">{entry.org}</p>
+              </div>
+              <span className="shrink-0 rounded-full bg-white/70 px-3 py-1 text-[0.6875rem] text-fg/55">
+                {entry.period}
+              </span>
+            </div>
+            <p className="mt-4 text-sm text-fg/60 leading-relaxed">{entry.detail}</p>
           </li>
         ))}
       </ol>
