@@ -3,12 +3,9 @@ export const LINKEDIN_URL = "https://www.linkedin.com/in/nakshatra-manglik/"
 export const CONTACT_EMAIL = "nakshatramanglik14@gmail.com"
 export const CAL_LINK = "nakshatra-manglik-heurb2/30min"
 
-// Set NEXT_PUBLIC_SITE_URL to your domain; on Vercel the production domain is picked up automatically.
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000")
+// Canonical domain for SEO links, sitemap and social cards. Override with NEXT_PUBLIC_SITE_URL
+// if the site moves to a custom domain.
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://naksh-codes.vercel.app"
 export const SITE_NAME = "Nakshatra Manglik"
 export const SITE_TITLE = "Nakshatra Manglik — Software Engineer"
 export const SITE_DESCRIPTION =

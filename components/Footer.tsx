@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="mx-auto max-w-6xl px-4 py-5">
       <div className="glass rounded-2xl px-6 py-5 flex flex-wrap items-center justify-between gap-4 text-xs text-fg/50">
         <div className="flex items-center gap-3">
-          <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-fg text-white font-semibold text-xs">
+          <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-white text-fg border font-semibold text-xs">
             N
           </span>
           <span>© {new Date().getFullYear()} Nakshatra Manglik</span>
