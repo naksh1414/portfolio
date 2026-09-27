@@ -1,3 +1,5 @@
+import { FiArrowUpRight } from "react-icons/fi"
+
 const STATS = [
   { value: "2+", label: "Years Experience" },
   { value: "5+", label: "Shipped Projects" },
@@ -36,7 +38,7 @@ export default function About() {
           rel="noreferrer"
           className="card mt-6 inline-block rounded-full px-5 py-2.5 text-sm font-medium hover:bg-white transition"
         >
-          More About Me ↗
+          More About Me <FiArrowUpRight aria-hidden className="inline -mt-0.5" />
         </a>
       </div>
     </section>

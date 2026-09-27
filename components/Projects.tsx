@@ -1,6 +1,7 @@
 import { projects } from "@/data/projects"
 import ProjectCard from "@/components/ProjectCard"
 import { GITHUB_URL } from "@/lib/site"
+import { FiArrowUpRight } from "react-icons/fi"
 
 export default function Projects() {
   return (
@@ -16,7 +17,7 @@ export default function Projects() {
           rel="noreferrer"
           className="card shrink-0 rounded-full px-4 py-2 text-xs font-medium hover:bg-white transition"
         >
-          View All Projects ↗
+          View All Projects <FiArrowUpRight aria-hidden className="inline -mt-0.5" />
         </a>
       </div>
       <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-5 items-start">

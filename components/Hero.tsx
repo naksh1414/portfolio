@@ -1,4 +1,6 @@
 import Image from "next/image"
+import { FiArrowUpRight, FiDownload } from "react-icons/fi"
+import { HiSparkles } from "react-icons/hi2"
 
 const STACK = ["Node.js", "Next.js", "Docker", "Azure", "Redis"]
 
@@ -23,14 +25,14 @@ export default function Hero() {
             href="#projects"
             className="rounded-full bg-fg text-white px-6 py-3 text-sm font-medium hover:opacity-85 transition-opacity"
           >
-            View My Work ↗
+            View My Work <FiArrowUpRight aria-hidden className="inline -mt-0.5" />
           </a>
           <a
             href="/resume.pdf"
             download
             className="glass rounded-full px-6 py-3 text-sm font-medium hover:bg-white transition"
           >
-            Download CV ↓
+            Download CV <FiDownload aria-hidden className="inline -mt-0.5" />
           </a>
         </div>
 
@@ -61,9 +63,7 @@ export default function Hero() {
         </div>
 
         <div className="glass absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-accent">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-            <path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2z" />
-          </svg>
+          <HiSparkles size={20} aria-hidden />
         </div>
 
         <div className="glass absolute bottom-0 right-0 rounded-2xl px-4 py-3 w-44 animate-[float_7s_ease-in-out_infinite_1s]">

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { FiSend } from "react-icons/fi"
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
@@ -87,7 +88,11 @@ export default function ContactForm() {
         disabled={status === "sending"}
         className="w-full sm:w-auto sm:px-16 rounded-xl bg-fg text-white py-3 text-sm font-medium hover:opacity-85 transition-opacity disabled:opacity-50"
       >
-        {status === "sending" ? "Sending…" : "Send Message ➤"}
+        {status === "sending" ? "Sending…" : (
+          <>
+            Send Message <FiSend aria-hidden className="inline -mt-0.5 ml-1" />
+          </>
+        )}
       </button>
     </form>
   )

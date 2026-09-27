@@ -3,6 +3,7 @@
 import { useRef, useState } from "react"
 import type { Project } from "@/data/projects"
 import { computeTilt } from "@/lib/tilt"
+import { FiArrowUpRight } from "react-icons/fi"
 
 const PREVIEW_GRADIENTS = [
   "from-violet-200 via-indigo-100 to-white",
@@ -60,7 +61,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
             <p className="text-fg/50 text-xs mt-0.5">{project.stack.slice(0, 3).join(" · ")}</p>
           </div>
           <span aria-hidden="true" className="card w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-xs transition-transform group-open:rotate-90">
-            ↗
+            <FiArrowUpRight />
           </span>
         </div>
       </summary>

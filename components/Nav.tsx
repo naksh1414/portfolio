@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { FiArrowUpRight, FiMenu } from "react-icons/fi"
 
 const LINKS = [
   { href: "/#top", label: "Home" },
@@ -42,14 +43,12 @@ export default function Nav() {
             href="/#contact"
             className="card hidden sm:inline-block whitespace-nowrap rounded-full px-4 py-2 text-[0.8125rem] font-medium hover:bg-white transition"
           >
-            Let&apos;s Talk ↗
+            Let&apos;s Talk <FiArrowUpRight aria-hidden className="inline -mt-0.5" />
           </Link>
           {/* ponytail: native <details> menu, no JS state needed */}
           <details className="xl:hidden relative">
             <summary className="list-none cursor-pointer card rounded-full w-9 h-9 flex items-center justify-center" aria-label="Menu">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M4 7h16M4 12h16M4 17h16" />
-              </svg>
+              <FiMenu size={16} aria-hidden />
             </summary>
             <nav className="card !bg-white absolute right-0 mt-2 w-48 rounded-2xl p-2 flex flex-col text-sm">
               {LINKS.map((link) => (

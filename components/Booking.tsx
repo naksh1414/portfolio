@@ -1,5 +1,6 @@
 import { CAL_LINK } from "@/lib/site"
 import CalEmbed from "@/components/CalEmbed"
+import { FiArrowUpRight } from "react-icons/fi"
 
 export default function Booking() {
   return (
@@ -16,7 +17,7 @@ export default function Booking() {
           rel="noreferrer"
           className="card shrink-0 rounded-full px-4 py-2 text-xs font-medium hover:bg-white transition"
         >
-          Open in Cal.com ↗
+          Open in Cal.com <FiArrowUpRight aria-hidden className="inline -mt-0.5" />
         </a>
       </div>
       <div className="card mt-8 rounded-2xl overflow-hidden">

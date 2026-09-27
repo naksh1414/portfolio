@@ -1,4 +1,5 @@
 import { GITHUB_URL } from "@/lib/site"
+import { FiArrowUpRight } from "react-icons/fi"
 
 export default function BuildingNow() {
   return (
@@ -21,7 +22,7 @@ export default function BuildingNow() {
         rel="noreferrer"
         className="card rounded-full px-4 py-2 text-xs font-medium hover:bg-white transition"
       >
-        Follow on GitHub ↗
+        Follow on GitHub <FiArrowUpRight aria-hidden className="inline -mt-0.5" />
       </a>
     </section>
   )
